@@ -317,7 +317,21 @@ gh secret set MONGO_DB --body "mandera_analytics"
 5. Replace `<username>` and `<password>` with your Atlas database user credentials
 6. Add the database name before the `?`: `.../mandera_analytics?retryWrites=true&w=majority`
 
-> **Tip:** After adding the secrets, you can trigger the workflow manually to test it: go to **Actions** → **Generate Synthetic Data → MongoDB Atlas** → **Run workflow**.
+#### Allow GitHub Actions to Connect to MongoDB Atlas
+
+GitHub Actions runners use dynamic IPs, so you must whitelist all IPs in Atlas:
+
+1. Go to [MongoDB Atlas](https://cloud.mongodb.com) → your project
+2. In the left sidebar, click **Network Access** (under Security)
+3. Click **Add IP Address**
+4. Click **ALLOW ACCESS FROM ANYWHERE** (sets `0.0.0.0/0`)
+5. Click **Confirm**
+
+> This is safe for a learning project — Atlas still requires username/password authentication. The IP list is just an additional firewall layer.
+
+Wait about 1 minute for the change to propagate, then test the workflow.
+
+> **Tip:** After adding the secrets and whitelisting IPs, trigger the workflow manually to test: go to **Actions** → **Generate Synthetic Data → MongoDB Atlas** → **Run workflow**.
 
 ---
 
@@ -419,6 +433,9 @@ Ensure `requirements.txt` has `sqlalchemy>=1.4.0,<2.0.0`. Airflow 2.9.x is not c
 
 **pgAdmin asks for a password:**
 Enter `pipeline_secret` (the PostgreSQL password from your `.env`).
+
+**GitHub Actions: SSL handshake failed / ServerSelectionTimeoutError:**
+Your MongoDB Atlas cluster is blocking GitHub Actions runners. Go to Atlas → **Network Access** → **Add IP Address** → **ALLOW ACCESS FROM ANYWHERE** (`0.0.0.0/0`). See the [GitHub Actions section](#allow-github-actions-to-connect-to-mongodb-atlas) for details.
 
 **Docker services won't start:**
 Make sure Docker Desktop is running: `open -a Docker` (macOS).

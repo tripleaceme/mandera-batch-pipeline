@@ -48,7 +48,8 @@ GitHub Actions (8AM & 4PM WAT)          Apache Airflow (8:30AM & 4:30PM WAT)
 
 | Service | Purpose | Port |
 |---------|---------|------|
-| PostgreSQL 16 | Warehouse (raw/staging/monitoring) + Airflow metadata | 5432 |
+| PostgreSQL 16 | Warehouse (raw/staging/monitoring) + Airflow metadata | 5433 (external) |
+| pgAdmin 4 | PostgreSQL web UI for browsing schemas and querying data | 5050 |
 | MinIO | S3-compatible object storage (durable archive) | 9000 (API), 9001 (Console) |
 | Redis 7 | Airflow Celery broker | 6379 |
 | Airflow 2.9 | Pipeline orchestration (webserver, scheduler, worker) | 8080 |
