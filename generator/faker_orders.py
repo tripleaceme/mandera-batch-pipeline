@@ -3,12 +3,11 @@
 import random
 from datetime import datetime, timezone
 
-from config.settings import ORDERS_MIN, ORDERS_MAX, REGIONS, PAYMENT_STATUSES, generate_batch_id
+from config.settings import ORDERS_MIN, ORDERS_MAX, REGIONS, PAYMENT_STATUSES
 
 
-def generate(customer_ids: list[str], product_ids: list[str]) -> list[dict]:
+def generate(customer_ids: list[str], product_ids: list[str], batch_id: str) -> list[dict]:
     """Generate 2000-5000 order documents referencing existing customers and products."""
-    batch_id = generate_batch_id()
     count = random.randint(ORDERS_MIN, ORDERS_MAX)
     orders = []
 

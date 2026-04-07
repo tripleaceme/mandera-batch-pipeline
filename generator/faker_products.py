@@ -3,13 +3,11 @@
 import random
 from datetime import datetime, timezone
 
-from config.settings import PRODUCTS_MIN, PRODUCTS_MAX, PRODUCT_CATEGORIES, generate_batch_id
+from config.settings import PRODUCTS_MIN, PRODUCTS_MAX, PRODUCT_CATEGORIES
 
 
-
-def generate() -> list[dict]:
+def generate(batch_id: str) -> list[dict]:
     """Generate 5-10 product documents."""
-    batch_id = generate_batch_id()
     count = random.randint(PRODUCTS_MIN, PRODUCTS_MAX)
     products = []
 

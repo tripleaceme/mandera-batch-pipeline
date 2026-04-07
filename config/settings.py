@@ -97,7 +97,32 @@ def today_partition() -> str:
     return now.strftime("%Y/%m/%d/")
 
 
+NUMBER_OF_BATCHES = int(os.getenv("NUMBER_OF_BATCHES", 2))
+
+# Scheduled run hours (UTC) — must match .github/workflows/generate_data.yml cron
+BATCH_SCHEDULE_HOURS = [7, 15]
+
+
 def generate_batch_id() -> str:
-    """Auto-generate batch ID from current timestamp: 2026_03_23_0700"""
+    """
+    Auto-generate batch ID: 2026_03_23_07_batch_1
+
+    Determines the batch number based on which scheduled hour slot
+    the current time falls closest to. Falls back to sequential
+    numbering if the hour doesn't match a known schedule.
+    """
     now = datetime.now(timezone.utc)
-    return now.strftime("%Y_%m_%d_%H%M")
+    date_part = now.strftime("%Y_%m_%d")
+    hour = now.hour
+
+    # Find the closest scheduled hour to determine batch number
+    batch_number = 1
+    for i, scheduled_hour in enumerate(BATCH_SCHEDULE_HOURS):
+        if abs(hour - scheduled_hour) <= 1:
+            batch_number = i + 1
+            break
+    else:
+        # Manual run outside scheduled hours — assign based on AM/PM
+        batch_number = 1 if hour < 12 else 2
+
+    return f"{date_part}_{hour:02d}_batch_0{batch_number}"

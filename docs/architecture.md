@@ -23,7 +23,7 @@ GitHub Actions (8AM & 4PM WAT)          Apache Airflow (8:30AM & 4:30PM WAT)
 
 1. **Source Generation** (GitHub Actions)
    - Faker generates customers (10-20), products (5-10), orders (2000-5000)
-   - Records tagged with `batch_id` (e.g., `2026_03_23_batch_01`)
+   - Records tagged with `batch_id` (e.g., `2026_03_23_07_batch_1`)
    - Inserted into MongoDB Atlas collections
 
 2. **Extraction** (Airflow — parallel)

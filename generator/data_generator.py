@@ -10,7 +10,7 @@ Usage:
 
 from pymongo import MongoClient
 
-from config.settings import MONGO_URI, MONGO_DB, MONGO_COLLECTIONS
+from config.settings import MONGO_URI, MONGO_DB, MONGO_COLLECTIONS, generate_batch_id
 from generator import faker_customers, faker_products, faker_orders
 
 
@@ -19,14 +19,18 @@ def run():
     client = MongoClient(MONGO_URI)
     db = client[MONGO_DB]
 
+    # Generate batch_id once so all records in this run share the same ID
+    batch_id = generate_batch_id()
+    print(f"  Batch ID: {batch_id}\n")
+
     try:
         # Generate and insert customers
-        customers = faker_customers.generate()
+        customers = faker_customers.generate(batch_id)
         db[MONGO_COLLECTIONS["customers"]].insert_many(customers)
         print(f"  ✓ Inserted {len(customers)} customers")
 
         # Generate and insert products
-        products = faker_products.generate()
+        products = faker_products.generate(batch_id)
         db[MONGO_COLLECTIONS["products"]].insert_many(products)
         print(f"  ✓ Inserted {len(products)} products")
 
@@ -35,7 +39,7 @@ def run():
         all_product_ids = db[MONGO_COLLECTIONS["products"]].distinct("product_id")
 
         # Generate and insert orders
-        orders = faker_orders.generate(all_customer_ids, all_product_ids)
+        orders = faker_orders.generate(all_customer_ids, all_product_ids, batch_id)
         db[MONGO_COLLECTIONS["orders"]].insert_many(orders)
         print(f"  ✓ Inserted {len(orders)} orders")
 

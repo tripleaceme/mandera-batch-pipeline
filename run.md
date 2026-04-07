@@ -157,7 +157,7 @@ Expected output:
 ✓ Data generation complete.
 ```
 
-Verify in MongoDB Atlas that the `customers`, `products`, and `orders` collections have documents. Each record includes a `batch_id` like `2026_03_23_0700`.
+Verify in MongoDB Atlas that the `customers`, `products`, and `orders` collections have documents. Each record includes a `batch_id` like `2026_04_07_07_batch_1`.
 
 #### Step 2: Extract → MinIO (Archive)
 
