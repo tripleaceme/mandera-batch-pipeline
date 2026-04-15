@@ -2,6 +2,14 @@
 
 import random
 
+def safe_int(value):
+    try:
+        if value in ("NaN", None, "", "null"):
+            return None
+        return int(float(value))
+    except (ValueError, TypeError):
+        return None
+
 
 def maybe(probability: float) -> bool:
     return random.random() < probability
