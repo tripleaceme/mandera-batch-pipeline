@@ -28,7 +28,12 @@ def introduce_order_issues(order: dict, config: dict) -> dict:
         order["amount"] = "NaN"
 
     if maybe(config["negative_amount_rate"]):
-        order["amount"] = -abs(int(order["amount"]))
+        #order["amount"] = order["amount"]
+        amount = safe_int(order["amount"])
+        if amount is None:
+            return 0 # or skip record
+        else:
+            return order["amount"] = -abs(amount)
 
     if maybe(config["invalid_status_rate"]):
         order["payment_status"] = "UNKNOWN_STATUS"
